@@ -1,0 +1,22 @@
+# Use official Node.js LTS image
+FROM node:18
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy backend source code
+COPY ./src ./src
+COPY .env ./
+
+# Expose port
+EXPOSE 5000
+
+# Start the backend
+CMD ["node", "src/index.js"]
+
