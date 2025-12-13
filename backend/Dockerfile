@@ -12,7 +12,9 @@ RUN npm install
 
 # Copy backend source code
 COPY ./src ./src
-COPY .env ./
+
+
+
 
 # Expose port
 EXPOSE 5000
