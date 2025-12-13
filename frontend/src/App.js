@@ -5,7 +5,7 @@ function App() {
   const [email, setEmail] = useState('');
   const [users, setUsers] = useState([]);
 
-  const BACKEND_URL = 'http://localhost:5000';
+  const BACKEND_URL = 'http://13.233.117.206:5000/';
 
   // Fetch users
   const fetchUsers = async () => {
