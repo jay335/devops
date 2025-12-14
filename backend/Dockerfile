@@ -4,6 +4,8 @@ FROM node:18
 # Create app directory
 WORKDIR /usr/src/app
 
+ENV NPM_CONFIG_LOGLEVEL=error
+
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
@@ -12,8 +14,6 @@ RUN npm install
 
 # Copy backend source code
 COPY ./src ./src
-
-
 
 
 # Expose port

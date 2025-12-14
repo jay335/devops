@@ -3,6 +3,8 @@ FROM node:18 as build
 
 WORKDIR /usr/src/app
 
+ENV NPM_CONFIG_LOGLEVEL=error
+
 COPY package*.json ./
 RUN npm install
 
