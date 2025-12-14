@@ -5,12 +5,10 @@ function App() {
   const [email, setEmail] = useState('');
   const [users, setUsers] = useState([]);
 
-  const BACKEND_URL = 'http://13.233.117.206:5000';
-
   // Fetch users
   const fetchUsers = async () => {
     try {
-      const res = await fetch(`${BACKEND_URL}/users`);
+      const res = await fetch('/api/users');
       const data = await res.json();
       setUsers(data);
     } catch (err) {
@@ -26,7 +24,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await fetch(`${BACKEND_URL}/users`, {
+    await fetch('/api/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email })
