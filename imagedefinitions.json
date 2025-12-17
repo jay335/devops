@@ -1,0 +1,14 @@
+[
+  {
+    "name": "frontend",
+    "imageUri": "776401291780.dkr.ecr.ap-south-1.amazonaws.com/devops-frontend:IMAGE_TAG"
+  },
+  {
+    "name": "backend",
+    "imageUri": "776401291780.dkr.ecr.ap-south-1.amazonaws.com/devops-backend:IMAGE_TAG"
+  },
+  {
+    "name": "nginx",
+    "imageUri": "776401291780.dkr.ecr.ap-south-1.amazonaws.com/devops-nginx:IMAGE_TAG"
+  }
+]

@@ -9,7 +9,7 @@ env:
     ECR_FRONTEND: devops-frontend
     ECR_BACKEND: devops-backend
     ECR_NGINX: devops-nginx
-    
+    IMAGE_TAG: $CODEBUILD_BUILD_NUMBER
 
 phases:
   pre_build:
@@ -21,23 +21,20 @@ phases:
   build:
     commands:
       - echo Building Docker images...
-      - docker build -t $ECR_FRONTEND ./frontend
-      - docker build -t $ECR_BACKEND ./backend
-      - docker build -t $ECR_NGINX ./nginx
+      - docker build -t $ECR_FRONTEND:$IMAGE_TAG ./frontend
+      - docker build -t $ECR_BACKEND:$IMAGE_TAG ./backend
+      - docker build -t $ECR_NGINX:$IMAGE_TAG ./nginx
 
-      - docker tag $ECR_FRONTEND:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_FRONTEND:latest
-      - docker tag $ECR_BACKEND:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_BACKEND:latest
-      - docker tag $ECR_NGINX:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_NGINX:latest
+      - docker tag $ECR_FRONTEND:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_FRONTEND:$IMAGE_TAG
+      - docker tag $ECR_BACKEND:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_BACKEND:$IMAGE_TAG
+      - docker tag $ECR_NGINX:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_NGINX:$IMAGE_TAG
 
   post_build:
     commands:
       - echo Pushing Docker images to ECR...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_FRONTEND:latest
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_BACKEND:latest
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_NGINX:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_FRONTEND:$IMAGE_TAG
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_BACKEND:$IMAGE_TAG
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_NGINX:$IMAGE_TAG
 
-      - echo Updating ECS service...
-      - aws ecs update-service \
-        --cluster $ECS_CLUSTER \
-        --service $ECS_SERVICE \
-        --force-new-deployment
+      - echo Creating imagedefinitions.json...
+      - sed -i "s/IMAGE_TAG/$IMAGE_TAG/g" imagedefinitions.json
