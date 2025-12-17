@@ -1,0 +1,32 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_REGION |
+        docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+
+  build:
+    commands:
+      - echo Building Docker images...
+      - docker build -t $ECR_FRONTEND ./frontend
+      - docker build -t $ECR_BACKEND ./backend
+      - docker build -t $ECR_NGINX ./nginx
+
+      - docker tag $ECR_FRONTEND:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_FRONTEND:latest
+      - docker tag $ECR_BACKEND:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_BACKEND:latest
+      - docker tag $ECR_NGINX:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_NGINX:latest
+
+  post_build:
+    commands:
+      - echo Pushing Docker images to ECR...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_FRONTEND:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_BACKEND:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_NGINX:latest
+
+      - echo Updating ECS service...
+      - aws ecs update-service \
+        --cluster $ECS_CLUSTER \
+        --service $ECS_SERVICE \
+        --force-new-deployment
