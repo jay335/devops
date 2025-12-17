@@ -1,5 +1,16 @@
 version: 0.2
 
+env:
+  variables:
+    AWS_ACCOUNT_ID: 776401291780
+    AWS_REGION: ap-south-1
+    ECS_CLUSTER: devops-cluster
+    ECS_SERVICE: my-app-service-01
+    ECR_FRONTEND: devops-frontend
+    ECR_BACKEND: devops-backend
+    ECR_NGINX: devops-nginx
+    
+
 phases:
   pre_build:
     commands:
