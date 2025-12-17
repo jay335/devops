@@ -9,7 +9,6 @@ env:
     ECR_FRONTEND: devops-frontend
     ECR_BACKEND: devops-backend
     ECR_NGINX: devops-nginx
-    IMAGE_TAG: "build-${CODEBUILD_BUILD_NUMBER}"
 
 phases:
   pre_build:
@@ -17,6 +16,9 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_REGION |
         docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+      - echo Setting IMAGE_TAG
+      - IMAGE_TAG="build-$CODEBUILD_BUILD_NUMBER"
+      - echo IMAGE_TAG is $IMAGE_TAG
 
   build:
     commands:
