@@ -40,3 +40,7 @@ phases:
 
       - echo Creating imagedefinitions.json...
       - sed -i "s/IMAGE_TAG/$IMAGE_TAG/g" imagedefinitions.json
+
+  artifacts:
+    files:
+      - imagedefinitions.json
