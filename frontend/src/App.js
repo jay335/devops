@@ -4,6 +4,8 @@ function App() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [users, setUsers] = useState([]);
+  const [age, setAge] = useState('');
+  const [city, setCity] = useState('');
 
   // Fetch users
   const fetchUsers = async () => {
@@ -27,11 +29,13 @@ function App() {
     await fetch('/api/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email })
+      body: JSON.stringify({ name, email, age, city })
     });
 
     setName('');
     setEmail('');
+    setAge('');
+    setCity('');
     fetchUsers();
   };
 
@@ -56,6 +60,23 @@ function App() {
         />
         <br /><br />
 
+	<input
+          placeholder="Age"
+          type="number"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          required
+        />
+        <br /><br />
+
+        <input
+          placeholder="City"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          required
+        />
+        <br /><br />
+
         <button type="submit">Add User</button>
       </form>
 
@@ -66,7 +87,7 @@ function App() {
       <ul>
         {users.map((u) => (
           <li key={u.id}>
-            {u.name} - {u.email}
+            {u.name} - {u.email} - {u.age} - {u.city}
           </li>
         ))}
       </ul>

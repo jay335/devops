@@ -39,9 +39,9 @@ app.post('/users', (req, res) => {
     if (!process.env.DB_HOST || process.env.DB_HOST === 'your-db-endpoint') {
         return res.json({ message: 'DB not connected yet' });
     }
-    const { name, email } = req.body;
-    const sql = 'INSERT INTO users (name, email) VALUES (?, ?)';
-    pool.query(sql, [name, email], (err, result) => {
+    const { name, email, age, city } = req.body;
+    const sql = 'INSERT INTO users (name, email, age, city) VALUES (?, ?, ? , ?)';
+    pool.query(sql, [name, email, age, city], (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -56,7 +56,7 @@ app.post('/users', (req, res) => {
 app.get('/users', (req, res) => {
    if (!process.env.DB_HOST || process.env.DB_HOST === 'your-db-endpoint') {
         return res.json([]);
-    } 
+    }
     const sql = 'SELECT * FROM users';
     pool.query(sql, (err, results) => {
         if (err) {
