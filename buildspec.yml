@@ -1,14 +1,14 @@
 version: 0.2
 
 env:
-  variables:
-    AWS_ACCOUNT_ID: 776401291780
-    AWS_REGION: ap-south-1
-    ECS_CLUSTER: devops-cluster
-    ECS_SERVICE: my-app-service-01
-    ECR_FRONTEND: devops-frontend
-    ECR_BACKEND: devops-backend
-    ECR_NGINX: devops-nginx
+  secrets-manager:
+    AWS_ACCOUNT_ID: "devops-secret:AWS_ACCOUNT_ID"
+    AWS_REGION: "devops-secret:AWS_REGION"
+    ECS_CLUSTER: "devops-secret:ECS_CLUSTER"
+    ECS_SERVICE: "devops-secret:ECS_SERVICE"
+    ECR_FRONTEND: "devops-secret:ECR_FRONTEND"
+    ECR_BACKEND: "devops-secret:ECR_BACKEND"
+    ECR_NGINX: "devops-secret:ECR_NGINX"
 
 phases:
   pre_build:
