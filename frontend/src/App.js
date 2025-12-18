@@ -5,6 +5,7 @@ function App() {
   const [email, setEmail] = useState('');
   const [users, setUsers] = useState([]);
   const [age, setAge] = useState('');
+  const [city, setCity] = useState('');
 
   // Fetch users
   const fetchUsers = async () => {
@@ -28,12 +29,13 @@ function App() {
     await fetch('/api/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, age })
+      body: JSON.stringify({ name, email, age, city })
     });
 
     setName('');
     setEmail('');
     setAge('');
+    setCity('');
     fetchUsers();
   };
 
@@ -63,6 +65,14 @@ function App() {
           type="number"
           value={age}
           onChange={(e) => setAge(e.target.value)}
+          required
+        />
+        <br /><br />
+
+	<input
+          placeholder="City"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
           required
         />
         <br /><br />
