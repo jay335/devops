@@ -34,7 +34,6 @@ function App() {
     setName('');
     setEmail('');
     setAge('');
-    setCity('');
     fetchUsers();
   };
 
@@ -78,7 +77,7 @@ function App() {
       <ul>
         {users.map((u) => (
           <li key={u.id}>
-            {u.name} - {u.email} - {u.age} - {u.city}
+            {u.name} - {u.email} - {u.age}
           </li>
         ))}
       </ul>
